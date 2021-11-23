@@ -11,10 +11,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     //Storage[] kanjiList = new Storage [5];
-    TextView kanjiInquiry;
-    EditText answerInput;
-    AppCompatButton NextButton;
-    int currentInquiry;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,17 +27,22 @@ public class MainActivity extends AppCompatActivity {
 
         */
 
-        kanjiInquiry = findViewById(R.id.kanjiInquiry);
-        answerInput = findViewById(R.id.answerInput);
-        NextButton = findViewById(R.id.NextButton);
-        currentInquiry=0;
-        //kanjiInquiry.setText(kanjiList[currentInquiry].kanji);
+
+
 
 
 
     }
 
-    public void OnNextButtonClick (View view){
+    public void onPrevLessonButtonClick(View view){
+
+    }
+
+    public void onNextLessonButtonClick(View view){
+
+    }
+
+    public void onNextReviewButtonClick (View view){
         /*
         if(answerInput.getText().toString().toLowerCase().equals(kanjiList[currentInquiry].meaning)){
 

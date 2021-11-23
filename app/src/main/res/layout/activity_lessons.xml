@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+
+
+<TextView
+    android:id="@+id/kanjiInquiry"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:text="文"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="150dp"
+    android:textSize="100dp"
+    android:textAlignment="center"
+    android:textColor="@color/black"
+    />
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_below="@id/kanjiInquiry"
+    android:layout_marginTop="50dp"
+    >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="5"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reading:"
+            android:layout_weight="5"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/reading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reading"
+            android:layout_weight="5"
+            android:textAlignment="center"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="5"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Meaning:"
+            android:layout_weight="5"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/meaning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Meaning"
+            android:layout_weight="5"
+            android:textAlignment="center"/>
+    </LinearLayout>
+</LinearLayout>
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    >
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/PrevButton"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_weight="5"
+        android:text="Previous"
+        android:background="@color/dark_green"
+        android:textColor="@color/white"
+        android:onClick="onPrevLessonButtonClick"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/NextButton"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_weight="5"
+        android:text="Next"
+        android:background="@color/dark_green"
+        android:textColor="@color/white"
+        android:onClick="onNextLessonButtonClick"/>
+
+</LinearLayout>
+
+</RelativeLayout>

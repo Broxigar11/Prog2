@@ -23,8 +23,7 @@ public class InitializedKanjiStorage extends KanjiStorage{
     public InitializedKanjiStorage(KanjiStorage s){
         this.kanji = s.kanji;
         this.meaning = s.meaning;
-        this.kunyomi = s.kunyomi;
-        this.onyomi = s.onyomi;
+        this.reading = s.reading;
         this.mnemonic = s.mnemonic;
         this.current_srs_stage = 0;
         this.incorrect_adjustment_count = 0;
@@ -77,9 +76,6 @@ public class InitializedKanjiStorage extends KanjiStorage{
         setNextReviewDate();
     }
 
-    public void SortByNextReviewDate(){
-
-    }
 
 
 

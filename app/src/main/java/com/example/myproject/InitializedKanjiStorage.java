@@ -1,5 +1,8 @@
 package com.example.myproject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -20,6 +23,20 @@ public class InitializedKanjiStorage extends KanjiStorage{
         SRStiming[7] = "M4";
     }
 
+    public InitializedKanjiStorage(Parcel in)
+    {
+        //read in same order that you wrote in writeToParcel
+        kanji = in.readString();
+        meaning    = in.readString();
+        reading = in.readString();
+        mnemonic = in.readString();
+        current_srs_stage = in.readInt();
+        incorrect_adjustment_count = in.readInt();
+        next_review_date = (LocalDateTime) in.readSerializable();
+//      reading in a list custom objects: in.readTypedList(someCustomObjectArrayList, someCustomObject.CREATOR )
+
+    }
+
     public InitializedKanjiStorage(KanjiStorage s){
         this.kanji = s.kanji;
         this.meaning = s.meaning;
@@ -27,11 +44,11 @@ public class InitializedKanjiStorage extends KanjiStorage{
         this.mnemonic = s.mnemonic;
         this.current_srs_stage = 0;
         this.incorrect_adjustment_count = 0;
-        this.next_review_date = next_review_date.now();
+        this.next_review_date = LocalDateTime.now();
     }
 
     private void setNextReviewDate(){
-        next_review_date=next_review_date.now().truncatedTo(ChronoUnit.HOURS);
+        next_review_date=LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
         if(current_srs_stage==0) return;
 
         switch (SRStiming[current_srs_stage-1].charAt(0)){
@@ -76,7 +93,34 @@ public class InitializedKanjiStorage extends KanjiStorage{
         setNextReviewDate();
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel out, int i)
+    {
+        //this is the order you should read in your contructor
+        out.writeString(kanji);
+        out.writeString(meaning);
+        out.writeString(reading);
+        out.writeString(mnemonic);
+        out.writeInt(current_srs_stage);
+        out.writeInt(incorrect_adjustment_count);
+        out.writeSerializable(next_review_date);
+//      writing some custom object: out.writeTypedList(someCustomObjectArrayList);
+
+    }
+
+    public static final Parcelable.Creator<InitializedKanjiStorage> CREATOR = new Parcelable.Creator<InitializedKanjiStorage>() {
+        public InitializedKanjiStorage createFromParcel(Parcel in) {
+            return new InitializedKanjiStorage(in);
+        }
+        public InitializedKanjiStorage[] newArray(int size) {
+            return new InitializedKanjiStorage[size];
+        }
+    };
 
 
 }

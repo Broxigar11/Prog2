@@ -3,14 +3,18 @@ package com.example.myproject;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    //Storage[] kanjiList = new Storage [5];
+    ArrayList<InitializedKanjiStorage> KanjiList;
+    ArrayList<KanjiStorage> toLessons;
+    ArrayList<InitializedKanjiStorage> toReviews;
 
 
     @Override
@@ -18,16 +22,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       /*
-        kanjiList[0] = new Storage("一", "one", "いち");
-        kanjiList[1] = new Storage("二", "two", "に");
-        kanjiList[2] = new Storage("三", "three", "さん");
-        kanjiList[3] = new Storage("四", "four", "し");
-        kanjiList[4] = new Storage("五", "five", "ご");
+        toLessons = getIntent().getParcelableArrayListExtra("Lessons");
+        toReviews = getIntent().getParcelableArrayListExtra("Reviews");
 
-        */
+        if(toLessons != null) {
+            for (KanjiStorage k: toLessons) {
+                toReviews.add(new InitializedKanjiStorage(k));
+            }
+            Intent intent = new Intent(this, InitializedKanjiStorage.class);
+            intent.putParcelableArrayListExtra("toReview", toReviews);
+            startActivity(intent);
+        } else if(toReviews != null) {
 
+        } else {
 
+        }
 
 
 

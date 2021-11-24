@@ -53,7 +53,14 @@ public class KanjiStorage implements Parcelable{
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel out, int i)
+    {
+        //this is the order you should read in your contructor
+        out.writeString(kanji);
+        out.writeString(meaning);
+        out.writeString(reading);
+        out.writeString(mnemonic);
+//      writing some custom object: out.writeTypedList(someCustomObjectArrayList);
 
     }
 

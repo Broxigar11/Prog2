@@ -27,5 +27,20 @@ public class ReviewActivity extends AppCompatActivity {
         //kanjiInquiry.setText(kanjiList[currentInquiry].kanji);
     }
 
+    public void onNextReviewButtonClick (View view){
+        /*
+        if(answerInput.getText().toString().toLowerCase().equals(kanjiList[currentInquiry].meaning)){
 
+            if(currentInquiry>3) currentInquiry=0;
+            else currentInquiry++;
+
+            kanjiInquiry.setText(kanjiList[currentInquiry].kanji);
+            answerInput.setText("");
+            Toast.makeText(this, "Correct", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "fuck", Toast.LENGTH_SHORT).show();
+        }
+
+         */
+    }
 }

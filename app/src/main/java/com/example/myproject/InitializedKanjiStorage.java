@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class InitializedKanjiStorage extends KanjiStorage{
@@ -45,6 +46,18 @@ public class InitializedKanjiStorage extends KanjiStorage{
         this.current_srs_stage = 0;
         this.incorrect_adjustment_count = 0;
         this.next_review_date = LocalDateTime.now();
+    }
+
+    public InitializedKanjiStorage(String k, String mean, String read, String mne, int srs, int ic, String date){
+        this.kanji = k;
+        this.meaning = mean;
+        this.reading = read;
+        this.mnemonic = mne;
+        this.current_srs_stage = srs;
+        this.incorrect_adjustment_count = ic;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
+        this.next_review_date = dateTime;
     }
 
     private void setNextReviewDate(){
@@ -122,5 +135,7 @@ public class InitializedKanjiStorage extends KanjiStorage{
         }
     };
 
-
+    public LocalDateTime getNextReviewDate(){
+        return next_review_date;
+    }
 }

@@ -15,5 +15,11 @@ public class LessonsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lessons);
     }
 
+    public void onPrevLessonButtonClick(View view){
 
+    }
+
+    public void onNextLessonButtonClick(View view){
+
+    }
 }

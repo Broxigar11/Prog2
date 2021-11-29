@@ -37,6 +37,7 @@ tools:context=".LessonsActivity">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Reading:"
+            android:textColor="@color/gray"
             android:layout_weight="5"
             android:textAlignment="center"/>
 
@@ -45,6 +46,7 @@ tools:context=".LessonsActivity">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Reading"
+            android:textColor="@color/gray"
             android:layout_weight="5"
             android:textAlignment="center"/>
     </LinearLayout>
@@ -59,12 +61,14 @@ tools:context=".LessonsActivity">
             android:layout_height="wrap_content"
             android:text="Meaning:"
             android:layout_weight="5"
+            android:textColor="@color/gray"
             android:textAlignment="center"/>
 
         <TextView
             android:id="@+id/meaning"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/gray"
             android:text="Meaning"
             android:layout_weight="5"
             android:textAlignment="center"/>
@@ -79,7 +83,7 @@ tools:context=".LessonsActivity">
     >
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/PrevButton"
+        android:id="@+id/prev"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_weight="5"
@@ -89,7 +93,7 @@ tools:context=".LessonsActivity">
         android:onClick="onPrevLessonButtonClick"/>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/NextButton"
+        android:id="@+id/next"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_weight="5"

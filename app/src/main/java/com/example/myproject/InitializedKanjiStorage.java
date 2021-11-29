@@ -55,7 +55,7 @@ public class InitializedKanjiStorage extends KanjiStorage{
         this.mnemonic = mne;
         this.current_srs_stage = srs;
         this.incorrect_adjustment_count = ic;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
         this.next_review_date = dateTime;
     }
@@ -135,7 +135,13 @@ public class InitializedKanjiStorage extends KanjiStorage{
         }
     };
 
+    public String getContentsAsString(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String temp = kanji + ";" + meaning + ";" + reading + ";" + meaning + ";" + current_srs_stage + ";" + incorrect_adjustment_count + ";" + next_review_date.format(formatter) + "\n";
+        return temp;
+    }
     public LocalDateTime getNextReviewDate(){
         return next_review_date;
     }
+
 }

@@ -31,4 +31,29 @@
         app:layout_constraintStart_toEndOf="@+id/toLessons"
         app:layout_constraintTop_toTopOf="@+id/toLessons" />
 
+    <TextView
+        android:id="@+id/okText"
+        android:layout_width="358dp"
+        android:layout_height="299dp"
+        android:layout_marginEnd="60dp"
+        android:text="OK"
+        android:textColor="@color/dark_green"
+        android:textSize="10pt"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/toReviews"
+        app:layout_constraintStart_toStartOf="@+id/toLessons"
+        app:layout_constraintTop_toBottomOf="@+id/toReviews" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/Import"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/dark_green"
+        android:onClick="Import"
+        android:text="import"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

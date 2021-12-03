@@ -64,7 +64,11 @@ public class MainActivity extends AppCompatActivity {
 
             WriteToDB(reviews_list);
             deleteRows(lessons_num);
-            to_reviews.performClick();
+
+            Intent intent = new Intent(this, ReviewActivity.class);
+            intent.putParcelableArrayListExtra("toReviewsNew", reviews_list);
+            startActivity(intent);
+
         } else if(reviews_list != null) {
             WriteToDB(reviews_list);
         }
@@ -96,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 String line = in.nextLine();
                 String[] split = line.split(";");
                 kanji_list.add(new InitializedKanjiStorage(split[0], split[1], split[2], split[3], Integer.parseInt(split[4]), Integer.parseInt(split[5]), split[6]));
-//TODO load review_list  
+//TODO load review_list
             }
             in.close();
 
@@ -191,13 +195,6 @@ public class MainActivity extends AppCompatActivity {
                 if (temp_i != -1) Collections.swap(kanji_list, i, temp_i);
             }
         }
-    }
-
-
-    public void Import(View view){
-        /*File file = new File("/storage/emulated/0/Documents/test.txt");
-        File file = new File(initialized_db_name);
-        FileUtils.copy();*/
     }
 
     public void onLessonsButtonClick(View view){

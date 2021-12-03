@@ -88,13 +88,13 @@ public class InitializedKanjiStorage extends KanjiStorage{
         }
     }
 
-    public void CorrectAnswer(){
+    public void correctAnswer(){
         current_srs_stage++;
         incorrect_adjustment_count=0;
         setNextReviewDate();
     }
 
-    public void IncorrectAnswer(){
+    public void incorrectAnswer(){
         int srs_penalty_factor;
         if(current_srs_stage>4) srs_penalty_factor=2;
         else srs_penalty_factor=1;

@@ -19,15 +19,28 @@ tools:context=".ReviewActivity">
     android:textColor="@color/black"
     />
 
+<TextView
+    android:id="@+id/question"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="asd"
+    android:layout_centerHorizontal="true"
+    android:layout_below="@+id/kanjiInquiry"
+    android:textSize="20dp"
+    android:textAlignment="center"
+    android:textColor="@color/black"
+    android:layout_marginTop="70dp"
+    />
+
 <EditText
     android:id="@+id/answerInput"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:ems="10"
     android:inputType="textPersonName"
-    android:layout_below="@id/kanjiInquiry"
+    android:layout_below="@id/question"
     android:layout_centerHorizontal="true"
-    android:layout_marginTop="100dp"
+
     />
 
 

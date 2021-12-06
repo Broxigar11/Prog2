@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
+import java.util.Random;
 
 public class ReviewActivity extends AppCompatActivity {
     TextView kanjiInquiry;
@@ -19,7 +21,7 @@ public class ReviewActivity extends AppCompatActivity {
     EditText answerInput;
     AppCompatButton NextButton;
 
-    ArrayList<InitializedKanjiStorage>[] kanji_list;
+    ArrayList<InitializedKanjiStorage>[] kanji_list = (ArrayList<InitializedKanjiStorage>[])new ArrayList[2];
     int r_or_m;
     int[] current_kanji = {0,0};
     boolean isNew = false;
@@ -36,12 +38,14 @@ public class ReviewActivity extends AppCompatActivity {
 
         kanji_list[0] = getIntent().getParcelableArrayListExtra("toReviews");
         if(kanji_list[0]==null) {
-            getIntent().getParcelableArrayListExtra("toReviewsNew");
+            kanji_list[0] = getIntent().getParcelableArrayListExtra("toReviewsNew");
             isNew = true;
         };
         kanji_list[1] = kanji_list[0];
         Collections.shuffle(kanji_list[0]);
         Collections.shuffle(kanji_list[1]);
+
+        setNextKanji();
 
     }
 
@@ -61,15 +65,16 @@ public class ReviewActivity extends AppCompatActivity {
     }
 
     public boolean isCorrect(){
+        String temp = answerInput.getText().toString().trim().toLowerCase(Locale.ROOT);
         if(r_or_m == 0){
-            return answerInput.getText().toString().equals(kanji_list[0].get(current_kanji[0]).getReading());
+            return temp.equals(kanji_list[0].get(current_kanji[0]).getReading().toLowerCase(Locale.ROOT).trim());
         }else{
-            return answerInput.getText().toString().equals(kanji_list[1].get(current_kanji[1]).getMeaning());
+            return temp.equals(kanji_list[1].get(current_kanji[1]).getMeaning().toLowerCase(Locale.ROOT).trim());
         }
     }
 
     public boolean isLast(){
-        return current_kanji[0] >= kanji_list[0].size()-1 && current_kanji[1] >= kanji_list[1].size()-1;
+        return current_kanji[0] >= kanji_list[0].size() && current_kanji[1] >= kanji_list[1].size();
     }
 
     public void correct(){
@@ -85,24 +90,28 @@ public class ReviewActivity extends AppCompatActivity {
             kanji_list[r_or_m].add(temp);
         }else{
             kanji_list[r_or_m].get(current_kanji[r_or_m]).incorrectAnswer(); //TODO calls twice because of shallow copy
+            current_kanji[r_or_m]++;
         }
         Toast.makeText(this, "Incorrect", Toast.LENGTH_SHORT).show();
     }
 
     public void setNextKanji(){
-        if(current_kanji[0] < kanji_list[0].size()-1 && current_kanji[1] < kanji_list[1].size()-1)
-            r_or_m = (int) (Math.random() * 2);
-        else if(current_kanji[1] >= kanji_list[1].size()-1)
-            r_or_m = 0;
-        else
-            r_or_m = 1;
+        if(!isLast()) {
+            if (current_kanji[0] < kanji_list[0].size() && current_kanji[1] < kanji_list[1].size()) {
+                Random r = new Random();
+                r_or_m = r.nextInt(2);
+            } else if (current_kanji[1] >= kanji_list[1].size())
+                r_or_m = 0;
+            else
+                r_or_m = 1;
 
-        if(r_or_m == 0)
-            question.setText("Kanji reading:");
-        else
-            question.setText("Kanji meaning:");
+            if (r_or_m == 0)
+                question.setText("Kanji reading:");
+            else
+                question.setText("Kanji meaning:");
 
-        answerInput.setText("");
-        kanjiInquiry.setText(kanji_list[r_or_m].get(current_kanji[r_or_m]).getKanji());
+            answerInput.setText("");
+            kanjiInquiry.setText(kanji_list[r_or_m].get(current_kanji[r_or_m]).getKanji());
+        }
     }
 }

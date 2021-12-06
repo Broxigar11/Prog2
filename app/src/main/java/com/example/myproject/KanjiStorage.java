@@ -3,7 +3,7 @@ package com.example.myproject;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class KanjiStorage implements Parcelable{
+public class KanjiStorage implements Parcelable {
     protected String kanji;
     protected String meaning;
     protected String reading;
@@ -16,10 +16,10 @@ public class KanjiStorage implements Parcelable{
         this.mnemonic = "";
     }
 
-    public KanjiStorage(String k, String mean, String r, String mne) {
+    public KanjiStorage(String k, String r, String mean, String mne) {
         this.kanji = k;
-        this.meaning = mean;
         this.reading = r;
+        this.meaning = mean;
         this.mnemonic = mne;
     }
 
@@ -27,7 +27,7 @@ public class KanjiStorage implements Parcelable{
     {
         //read in same order that you wrote in writeToParcel
         kanji = in.readString();
-        meaning    = in.readString();
+        meaning = in.readString();
         reading = in.readString();
         mnemonic = in.readString();
 //      reading in a list custom objects: in.readTypedList(someCustomObjectArrayList, someCustomObject.CREATOR )

@@ -13,22 +13,32 @@ public class InitializedKanjiStorage extends KanjiStorage{
     private LocalDateTime next_review_date;
 
     static final String[] SRStiming = new String[8];
+//    static{
+//        SRStiming[0] = "h4";
+//        SRStiming[1] = "h8";
+//        SRStiming[2] = "d1";
+//        SRStiming[3] = "d2";
+//        SRStiming[4] = "w1";
+//        SRStiming[5] = "w2";
+//        SRStiming[6] = "M1";
+//        SRStiming[7] = "M4";
+//    }
     static{
-        SRStiming[0] = "h4";
-        SRStiming[1] = "h8";
-        SRStiming[2] = "d1";
-        SRStiming[3] = "d2";
-        SRStiming[4] = "w1";
-        SRStiming[5] = "w2";
-        SRStiming[6] = "M1";
-        SRStiming[7] = "M4";
+        SRStiming[0] = "m4";
+        SRStiming[1] = "m4";
+        SRStiming[2] = "m4";
+        SRStiming[3] = "m4";
+        SRStiming[4] = "h1";
+        SRStiming[5] = "m4";
+        SRStiming[6] = "h2";
+        SRStiming[7] = "m4";
     }
 
     public InitializedKanjiStorage(Parcel in)
     {
         //read in same order that you wrote in writeToParcel
         kanji = in.readString();
-        meaning    = in.readString();
+        meaning = in.readString();
         reading = in.readString();
         mnemonic = in.readString();
         current_srs_stage = in.readInt();
@@ -38,6 +48,16 @@ public class InitializedKanjiStorage extends KanjiStorage{
 
     }
 
+    public InitializedKanjiStorage(InitializedKanjiStorage s){
+        this.kanji = s.kanji;
+        this.meaning = s.meaning;
+        this.reading = s.reading;
+        this.mnemonic = s.mnemonic;
+        this.current_srs_stage = s.current_srs_stage;
+        this.incorrect_adjustment_count = s.incorrect_adjustment_count;
+        this.next_review_date = s.next_review_date;
+    }
+
     public InitializedKanjiStorage(KanjiStorage s){
         this.kanji = s.kanji;
         this.meaning = s.meaning;
@@ -45,43 +65,42 @@ public class InitializedKanjiStorage extends KanjiStorage{
         this.mnemonic = s.mnemonic;
         this.current_srs_stage = 0;
         this.incorrect_adjustment_count = 0;
-        this.next_review_date = LocalDateTime.now();
+        this.next_review_date = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);  //TODO HOURS
     }
 
-    public InitializedKanjiStorage(String k, String mean, String read, String mne, int srs, int ic, String date){
+    public InitializedKanjiStorage(String k, String mean, String read, String mne, int srs, int ic, LocalDateTime date){
         this.kanji = k;
         this.meaning = mean;
         this.reading = read;
         this.mnemonic = mne;
         this.current_srs_stage = srs;
         this.incorrect_adjustment_count = ic;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
-        this.next_review_date = dateTime;
+
+        this.next_review_date = date;
     }
 
     private void setNextReviewDate(){
-        next_review_date=LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
-        if(current_srs_stage==0) return;
+        next_review_date=LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES); //TODO HOURS
+        if(current_srs_stage<=0) return;
 
         switch (SRStiming[current_srs_stage-1].charAt(0)){
             case 's':
-                next_review_date.plusSeconds(Long.parseLong(SRStiming[current_srs_stage-1].substring(1)));
+                next_review_date = next_review_date.plusSeconds(Long.parseLong(SRStiming[current_srs_stage-1].substring(1)));
                 break;
             case 'm':
-                next_review_date.plusMinutes(Long.parseLong(SRStiming[current_srs_stage-1].substring(1)));
+                next_review_date = next_review_date.plusMinutes(Long.parseLong(SRStiming[current_srs_stage-1].substring(1)));
                 break;
             case 'h':
-                next_review_date.plusHours(Long.parseLong(SRStiming[current_srs_stage-1].substring(1)));
+                next_review_date = next_review_date.plusHours(Long.parseLong(SRStiming[current_srs_stage-1].substring(1)));
                 break;
             case 'd':
-                next_review_date.plusDays(Long.parseLong(SRStiming[current_srs_stage-1].substring(1)));
+                next_review_date = next_review_date.plusDays(Long.parseLong(SRStiming[current_srs_stage-1].substring(1)));
                 break;
             case 'w':
-                next_review_date.plusWeeks(Long.parseLong(SRStiming[current_srs_stage-1].substring(1)));
+                next_review_date = next_review_date.plusWeeks(Long.parseLong(SRStiming[current_srs_stage-1].substring(1)));
                 break;
             case 'M':
-                next_review_date.plusMonths(Long.parseLong(SRStiming[current_srs_stage-1].substring(1)));
+                next_review_date = next_review_date.plusMonths(Long.parseLong(SRStiming[current_srs_stage-1].substring(1)));
                 break;
             default:
                 break;
@@ -137,7 +156,7 @@ public class InitializedKanjiStorage extends KanjiStorage{
 
     public String getContentsAsString(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String temp = kanji + ";" + meaning + ";" + reading + ";" + meaning + ";" + current_srs_stage + ";" + incorrect_adjustment_count + ";" + next_review_date.format(formatter) + "\n";
+        String temp = kanji + ";" + meaning + ";" + reading + ";" + mnemonic + ";" + current_srs_stage + ";" + incorrect_adjustment_count + ";" + next_review_date.format(formatter) + "\n";
         return temp;
     }
     public LocalDateTime getNextReviewDate(){

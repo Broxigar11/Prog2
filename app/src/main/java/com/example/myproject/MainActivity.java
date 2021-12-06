@@ -5,6 +5,7 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -14,12 +15,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
-    private static ArrayList<InitializedKanjiStorage> kanji_list;
+    private static ArrayList<InitializedKanjiStorage> kanji_list = null;
     ArrayList<KanjiStorage> lessons_list;
     ArrayList<InitializedKanjiStorage> reviews_list;
 
@@ -54,15 +57,16 @@ public class MainActivity extends AppCompatActivity {
         lessons_list = getIntent().getParcelableArrayListExtra("fromLessons");
         reviews_list = getIntent().getParcelableArrayListExtra("fromReviews");
 
-        lessons_num = 5;
+        lessons_num = 2;
+        if(kanji_list==null) ReadFromDB();
 
         if(lessons_list != null) {
-            reviews_list = new ArrayList<>();
+            reviews_list = new ArrayList<InitializedKanjiStorage>();
             for (KanjiStorage k: lessons_list) {
                 reviews_list.add(new InitializedKanjiStorage(k));
             }
 
-            WriteToDB(reviews_list);
+            editDB(reviews_list);
             deleteRows(lessons_num);
 
             Intent intent = new Intent(this, ReviewActivity.class);
@@ -70,17 +74,17 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
 
         } else if(reviews_list != null) {
-            WriteToDB(reviews_list);
+            editDB(reviews_list);
+            reviews_list = new ArrayList<InitializedKanjiStorage>();
         }
+
         ReadFromBaseDB();
-        ReadFromDB();
+        loadReviewList();
 
-
+        if(lessons_list.isEmpty()) to_lessons.setBackgroundColor(Color.parseColor("#616161"));
+        if(reviews_list.isEmpty()) to_reviews.setBackgroundColor(Color.parseColor("#616161"));
 
         ok_text.setVisibility(View.VISIBLE);
-        File file = Environment.getExternalStorageDirectory();
-        ok_text.setText(file.getAbsolutePath());
-
 
 
 
@@ -89,18 +93,30 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void loadReviewList(){
+        if(reviews_list == null) reviews_list = new ArrayList<InitializedKanjiStorage>();
+        for (InitializedKanjiStorage k: kanji_list) {
+            if(!k.getNextReviewDate().isAfter(LocalDateTime.now()))
+                reviews_list.add(k);
+            else
+                break;
+        }
+    }
+
     public void ReadFromDB(){
-        if(kanji_list == null) kanji_list = new ArrayList<>();
+        kanji_list = new ArrayList<>();
         File file = new File(initialized_db_name);
         try {
-            if(!file.exists()) file.createNewFile(); //TODO
+            if(!file.exists()) file.createNewFile();
 
             Scanner in = new Scanner(file);
             while(in.hasNextLine()) {
                 String line = in.nextLine();
                 String[] split = line.split(";");
-                kanji_list.add(new InitializedKanjiStorage(split[0], split[1], split[2], split[3], Integer.parseInt(split[4]), Integer.parseInt(split[5]), split[6]));
-//TODO load review_list
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime dateTime = LocalDateTime.parse(split[6], formatter);
+                InitializedKanjiStorage temp = new InitializedKanjiStorage(split[0], split[1], split[2], split[3], Integer.parseInt(split[4]), Integer.parseInt(split[5]), dateTime);
+                kanji_list.add(temp);
             }
             in.close();
 
@@ -126,7 +142,15 @@ public class MainActivity extends AppCompatActivity {
                     if(in.hasNextLine()) {
                         String line = in.nextLine();
                         String[] split = line.split(";");
-                        lessons_list.add(new KanjiStorage(split[0], split[1], split[2], "")); //TODO
+                        if(split.length<4) {
+                            String[] temp = new String[4];
+                            for(int j=0; j<4; j++){
+                                if(j<split.length) temp[j]=split[j];
+                                else temp[j]="";
+                            }
+                            split=temp;
+                        };
+                        lessons_list.add(new KanjiStorage(split[0], split[1], split[2], split[3]));
                     }
                 }
 
@@ -138,9 +162,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void WriteToDB(ArrayList<InitializedKanjiStorage> list){
-        if(kanji_list==null) kanji_list = new ArrayList<>();
-        kanji_list.addAll(list);
+    public void editDB(ArrayList<InitializedKanjiStorage> list){
+        //while(i<kanji_list.size() && list.size()>0){
+        for(int i=0; i<kanji_list.size(); i++){
+          //  if(list.size()>0){
+                for (int j=0; j<list.size(); j++) {
+                    if (kanji_list.get(i).getKanji().equals(list.get(j).getKanji())) {
+                        kanji_list.set(i, new InitializedKanjiStorage(list.get(j)));
+                        list.remove(j);
+                        break;
+                    }
+                }
+//            } else {
+//                break;
+//            }
+        }
+        if(!list.isEmpty()) kanji_list.addAll(list);
+        writeDB();
+    }
+
+    public void writeDB(){
         DBorderByDate();
         try {
             File file = new File(initialized_db_name);
@@ -207,9 +248,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void onReviewsButtonClick(View view){
         if(reviews_list != null && !reviews_list.isEmpty()){
-                Intent intent = new Intent(this, ReviewActivity.class);
-                intent.putParcelableArrayListExtra("toReviews", reviews_list);
-                startActivity(intent);
+            Intent intent = new Intent(this, ReviewActivity.class);
+            intent.putParcelableArrayListExtra("toReviews", reviews_list);
+            startActivity(intent);
         }
     }
 

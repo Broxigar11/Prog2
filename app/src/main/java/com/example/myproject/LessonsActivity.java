@@ -61,7 +61,7 @@ public class LessonsActivity extends AppCompatActivity {
     public void setKanjiData(int i){
         KanjiStorage temp = list.get(i);
         kanji.setText(temp.kanji);
-        reading.setText(temp.kanji);
+        reading.setText(temp.reading);
         meaning.setText(temp.meaning);
         if(i==0) prev.setBackgroundColor(Color.parseColor("#616161"));
         else prev.setBackgroundColor(Color.parseColor("#4a7556"));

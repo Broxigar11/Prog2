@@ -18,12 +18,9 @@ _A japán írás kanji karaktereinek megtanulásában segítő app._
 ---
 * ### Elsődleges elemek
 
-    - kanji/jelentés kiválasztása az adatbázisból
+    - kanji olvasásának/jelentésének kiválasztása az adatbázisból
     - szó bevitele
-
     - egyezés ellenörzése
 
 * ### Másodlagos elemek
-
     - spaced repetition system használata
-    - kanji csoportosítása nehézségi szint szerint
